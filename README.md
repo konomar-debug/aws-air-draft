@@ -17,4 +17,4 @@ An overview of the AWS architecture and its components used in the deployment. T
 
 The deployment spans two Availability Zones (AZs) to ensure high availability (HA).
 
-![aws-air-draft-diagram](/Users/MarcinKonopka/aws-air-draft/aws-air.jpg)
+![aws-air-draft-diagram](aws-air.jpg)
