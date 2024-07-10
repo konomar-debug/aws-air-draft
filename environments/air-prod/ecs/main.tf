@@ -11,6 +11,10 @@ resource "aws_ecs_cluster" "ecs_cluster" {
   name = "ecs-cluster-air-prod"
 }
 
+resource "aws_cloudwatch_log_group" "ecs_log_group" {
+  name              = "/ecs/air-prod"
+  retention_in_days = 1
+}
 
 resource "aws_ecs_task_definition" "task_definition" {
   family                   = "nginx-family"
@@ -18,19 +22,27 @@ resource "aws_ecs_task_definition" "task_definition" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
+  execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
+  task_role_arn            = aws_iam_role.ecsTaskRole.arn
 
   container_definitions = jsonencode([{
     name        = var.container_name
     image       = "nginx:latest"
     cpu         = 256
     memory      = 512
-    execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
-    task_role_arn            = aws_iam_role.ecsTaskRole.arn
     essential   = true
     portMappings = [{
       containerPort = var.container_port
       hostPort      = var.container_port
     }]
+    logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        awslogs-group         = aws_cloudwatch_log_group.ecs_log_group.name
+        awslogs-region        = var.region
+        awslogs-stream-prefix = "ecs"
+      }
+    }
     healthCheck = {
       command     = ["CMD-SHELL", "curl -f http://localhost/ || exit 1"]
       interval    = 30
