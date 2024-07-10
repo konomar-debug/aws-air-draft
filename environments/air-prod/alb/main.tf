@@ -31,7 +31,7 @@ resource "aws_lb_target_group" "target_group" {
   target_type = "ip"
   vpc_id      = local.vpc_id
   health_check {
-    path                = "/health"
+    path                = "/"
     protocol            = "HTTP"
     matcher             = "200"
     port                = "traffic-port"

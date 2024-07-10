@@ -43,3 +43,8 @@ output "listener_default_action_target_group_arn" {
   value       = aws_lb_listener.listener.default_action[0].target_group_arn
   description = "The ARN of the target group for the default action of the load balancer listener"
 }
+
+output "alb_dns_name" {
+  value       = aws_alb.application_load_balancer.dns_name
+  description = "The DNS name of the Application Load Balancer"
+}
