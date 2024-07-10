@@ -27,3 +27,11 @@ output "azs" {
   description = "A list of availability zones specified as argument to this module"
   value       = module.vpc.azs
 }
+
+output "default_route_table_id" {
+  value = data.aws_route_table.default.id
+}
+
+output "default_route_table_routes" {
+  value = data.aws_route_table.default.routes
+}
